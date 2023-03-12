@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b2e8b97-a2d3-4c87-9bf7-47b2844dc36a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/Direction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCube.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCubeModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/RubikCubeTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="8b2e8b97-a2d3-4c87-9bf7-47b2844dc36a" name="Changes" comment="На всякий">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCub/Hello.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCube.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/RubikCubeTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/RubikCubeTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +48,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
 }</component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.RubikCube">
     <configuration name="RubikCube" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.rubicCube.RubikCube" />
       <module name="lab1.main" />
@@ -67,8 +62,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="RubikCubeTests.equals" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;RubikCubeTests.equals&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.RubikCubeTests.equals" />
         <item itemvalue="Application.RubikCube" />
       </list>
     </recent_temporary>
@@ -82,6 +101,14 @@
       <option name="presentableId" value="Default" />
       <updated>1677146241988</updated>
     </task>
+    <task id="LOCAL-00001" summary="Не реализовал solvingTheCube и тесты не написаны">
+      <created>1678391297326</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1678391297326</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -94,5 +121,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Не реализовал solvingTheCube и тесты не написаны" />
+    <MESSAGE value="На всякий" />
+    <option name="LAST_COMMIT_MESSAGE" value="На всякий" />
   </component>
 </project>
