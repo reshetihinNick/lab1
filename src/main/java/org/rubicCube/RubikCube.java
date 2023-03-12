@@ -4,12 +4,47 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.StringJoiner;
 
-public class RubikCube implements RubikCubeModel {
+public class RubikCube {
     private final int size;
     private final CubeColors[][][] cube;
 
+    protected enum ParitySolution {
+        PARITY1,
+        PARITY2,
+        PARITY3,
+        PARITY4,
+        PARITY5,
+        PARITY6,
+        PARITY7,
+        DEFAULT
+    }
+
+    protected enum Face {
+        FRONT,
+        BACK,
+        LEFT,
+        RIGHT,
+        UP,
+        DOWN
+    }
+
+    protected enum Direction {
+        clockwise,
+        counterclockwise
+    }
+
+    protected enum CubeColors {
+        RED,
+        ORANGE,
+        YELLOW,
+        WHITE,
+        GREEN,
+        BLUE
+    }
+
     public RubikCube(int size) {
         this.size = size;
+        if (this.size < 2) throw new Error("Need size more than 1");
         this.cube = new CubeColors[6][size][size];
         cubeCreating();
     }
@@ -28,11 +63,7 @@ public class RubikCube implements RubikCubeModel {
         cube1.cubeMixing();
         System.out.println(cube1);
         System.out.println("------------------");
-//        cube1.combinationOne();
-//        cube1.rotateSomeLayersTo(Face.LEFT, Direction.counterclockwise, 1);
         cube1.solvingTheCube();
-//        cube1.combinationPIFPAF();
-//        cube1.rotateSomeLayersTo(Face.DOWN, Direction.clockwise, 1);
         System.out.println(cube1);
     }
 //Состояние граней
@@ -91,15 +122,49 @@ public class RubikCube implements RubikCubeModel {
         rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
     }
 
-    private CubeColors colorInBox(int face, int row, int column) {
-        return cube[face][row][column];
+    private void finalCombinationOne() {
+        combinationPIFPAF();
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
     }
 
+    private void finalCombinationTwo() {
+        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
+        combinationPIFPAF();
+        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
+        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
+        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
+    }
     private boolean ifSingleColorInFace(int face, CubeColors color) {
         for (int row = 0; row < size; row++) {
             if (!ifSingleColorInRow(face, row, color)) return false;
          }
         return true;
+    }
+
+    private boolean ifSomeSingleColorInFace(int face) {
+        for (int row = 0; row < size; row++) {
+            if (!ifSomeSingleColorInRow(face, row)) return false;
+        }
+        return cube[face][0][0] == cube[face][size - 1][0];
     }
 
     private boolean ifSingleColorInRow(int face, int row, CubeColors color) {
@@ -116,22 +181,84 @@ public class RubikCube implements RubikCubeModel {
         return true;
     }
 
-    private boolean whiteColorCheck() {
-        return cube[0][size - 1][size - 1] == CubeColors.WHITE ||
-                cube[0][0][size - 1] == CubeColors.WHITE ||
-                cube[4][size - 1][size - 1] == CubeColors.WHITE ||
-                cube[3][0][0] == CubeColors.WHITE ||
-                cube[3][size - 1][0] == CubeColors.WHITE;
+    private boolean ifSomeSingleColorInRows(int rows) {
+        int row;
+        for (int face = 0; face < 4; face++) {
+            if (face == 1) row = size - 1 - rows;
+            else row = rows;
+            if (!ifSomeSingleColorInRow(face, row)) return false;
+        }
+        return true;
     }
+
+    private boolean whiteColorCheck() {
+        return  cube[0][size - 1][size - 1] == CubeColors.WHITE ||
+                cube[0][0][size - 1]        == CubeColors.WHITE ||
+                cube[4][size - 1][size - 1] == CubeColors.WHITE ||
+                cube[3][0][0]               == CubeColors.WHITE ||
+                cube[3][size - 1][0]        == CubeColors.WHITE;
+    }
+
+    private ParitySolution ParitySearch() {
+        if (cube[0][0][0]               == CubeColors.YELLOW &&
+            cube[2][0][0]               == CubeColors.YELLOW &&
+            cube[3][0][0]               == CubeColors.YELLOW &&
+            cube[4][0][size - 1]        == CubeColors.YELLOW
+        ) return ParitySolution.PARITY1;
+        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
+            cube[3][0][size - 1]        == CubeColors.YELLOW &&
+            cube[1][size - 1][0]        == CubeColors.YELLOW &&
+            cube[4][size - 1][0]        == CubeColors.YELLOW
+        ) return ParitySolution.PARITY2;
+        if (cube[0][0][0]               == CubeColors.YELLOW &&
+            cube[3][0][size - 1]        == CubeColors.YELLOW &&
+            cube[4][0][0]               == CubeColors.YELLOW &&
+            cube[4][size - 1][size - 1] == CubeColors.YELLOW
+        ) return ParitySolution.PARITY5;
+        if (cube[4][size - 1][0]        == CubeColors.YELLOW &&
+            cube[4][size - 1][size - 1] == CubeColors.YELLOW &&
+            cube[3][0][size - 1]        == CubeColors.YELLOW &&
+            cube[2][0][0]               == CubeColors.YELLOW
+        ) return ParitySolution.PARITY6;
+        if (ifSingleColorInRow(0, 0, CubeColors.YELLOW) &&
+            ifSingleColorInRow(1,size - 1, CubeColors.YELLOW))
+            return ParitySolution.PARITY3;
+        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
+            cube[1][size - 1][size - 1] == CubeColors.YELLOW &&
+            ifSingleColorInRow(2, 0, CubeColors.YELLOW)
+        ) return ParitySolution.PARITY4;
+        if (cube[4][0][0]        == CubeColors.YELLOW &&
+            cube[4][size - 1][0] == CubeColors.YELLOW &&
+            ifSingleColorInRow(3, 0, CubeColors.YELLOW)
+        ) return ParitySolution.PARITY7;
+        return ParitySolution.DEFAULT;
+    }
+
+    private boolean isSolved() {
+        for (int face = 0; face < 6; face++) {
+            if (!ifSomeSingleColorInFace(face)) return false;
+        }
+        return true;
+    }
+
+    private boolean singleColorFaceSearch() {
+        for (int turnCount = 0; turnCount < 4; turnCount++) {
+            if (ifSomeSingleColorInFace(0) ||
+                ifSomeSingleColorInFace(1) ||
+                ifSomeSingleColorInFace(2) ||
+                ifSomeSingleColorInFace(3)) return true;
+            rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+        }
+        return false;
+    }
+
     public void solvingTheCube() {
+        if (size != 2) throw new Error("This function solve cube with size 2 only");
         while (!ifSingleColorInFace(5, CubeColors.WHITE)) {
             if (whiteColorCheck()) {
                 if (cube[5][0][size - 1] != CubeColors.WHITE) {
-                    while (cube[5][0][size - 1] != CubeColors.WHITE) {
+                    while (cube[5][0][size - 1] != CubeColors.WHITE)
                         combinationPIFPAF();
-                        System.out.println("PIFPAF");
-                        System.out.println(this);
-                    }
                 }
                 else {
                     rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
@@ -142,40 +269,68 @@ public class RubikCube implements RubikCubeModel {
         }
         rotateFaceTo(Face.RIGHT, Direction.clockwise);
         rotateFaceTo(Face.RIGHT, Direction.clockwise);
-        System.out.println(this);
-        if (ifSomeSingleColorInRow(2, 0))
-            rotateFaceTo(Face.UP, Direction.counterclockwise);
-        else {
-            if (ifSomeSingleColorInRow(3, 0))
-                rotateFaceTo(Face.UP, Direction.clockwise);
-            else {
-                rotateFaceTo(Face.UP, Direction.clockwise);
-                rotateFaceTo(Face.UP, Direction.clockwise);
+        while (!ifSomeSingleColorInRows(0)) {
+            if (!ifSomeSingleColorInRow(0, 0)) {
+                if (ifSomeSingleColorInRow(2, 0))
+                    rotateFaceTo(Face.UP, Direction.counterclockwise);
+                else {
+                    if (ifSomeSingleColorInRow(3, 0))
+                        rotateFaceTo(Face.UP, Direction.clockwise);
+                    else {
+                        if (ifSomeSingleColorInRow(1, size - 1)) {
+                            rotateFaceTo(Face.UP, Direction.clockwise);
+                            rotateFaceTo(Face.UP, Direction.clockwise);
+                        }
+                    }
+                }
+            }
+            combinationOne();
+        }
+        while (!ifSomeSingleColorInRow(0, 0) && cube[0][0][0] == CubeColors.BLUE)
+            rotateFaceTo(Face.UP, Direction.clockwise);
+        rotateFaceTo(Face.FRONT, Direction.clockwise);
+        rotateFaceTo(Face.FRONT, Direction.clockwise);
+        while (ParitySearch() == ParitySolution.DEFAULT) {
+            if (ifSingleColorInFace(4, CubeColors.YELLOW)) break;
+            rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+        }
+        switch (ParitySearch()) {
+            case PARITY1 -> combinationTwo();
+            case PARITY2 -> combinationThree();
+            case PARITY3 -> {
+                combinationTwo();
+                combinationTwo();
+            }
+            case PARITY4 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+                combinationTwo();
+            }
+            case PARITY5 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+                combinationThree();
+            }
+            case PARITY6 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+                combinationThree();
+            }
+            case PARITY7 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
+                combinationThree();
             }
         }
-        combinationOne();
-        System.out.println(this);
-        if (ifSomeSingleColorInRow(2, 0))
-            rotateFaceTo(Face.UP, Direction.counterclockwise);
-        else {
-            if (ifSomeSingleColorInRow(3, 0))
-                rotateFaceTo(Face.UP, Direction.clockwise);
-            else {
-                rotateFaceTo(Face.UP, Direction.clockwise);
-                rotateFaceTo(Face.UP, Direction.clockwise);
-            }
+        if (singleColorFaceSearch()) {
+            while (!ifSomeSingleColorInFace(2)) rotateFaceTo(Face.UP, Direction.clockwise);
+            if (!isSolved()) finalCombinationOne();
         }
-        System.out.println(this);
-        combinationOne();
-//        while (!ifSomeSingleColorInRow(0, 0)) {
-//            rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-//            System.out.println("While------");
-//            System.out.println(this);
-//        }
-//        System.out.println(this);
-//        combinationOne();
-        //System.out.println(this);
-        //combinationOne();
+        else {
+            finalCombinationTwo();
+            while (!isSolved()) rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
+        }
     }
 // Поворот слоев
     private void faceTurning(Face face, Direction direction) {
@@ -203,7 +358,7 @@ public class RubikCube implements RubikCubeModel {
         cube[faceInt] = buffer.clone();
     }
 
-    public void reverseArray(int face, int row) {
+    public void reverseRow(int face, int row) {
         CubeColors temp;
         for (int column = 0; column < size / 2; column++) {
             temp = cube[face][row][column];
@@ -220,20 +375,19 @@ public class RubikCube implements RubikCubeModel {
                 cube[faceTwo][layer] = cube[faceOne][layer].clone();
             }
             else {
-                reverseArray(faceTwo, size - 1 - layer);
+                reverseRow(faceTwo, size - 1 - layer);
                 buffer = cube[faceTwo][size - 1 - layer];
-                reverseArray(faceOne, layer);
+                reverseRow(faceOne, layer);
                 cube[faceTwo][size - 1 - layer] = cube[faceOne][layer].clone();
             }
             cube[faceOne][layer] = buffer.clone();
         }
     }
 
-    private void horizonSwapLayer(int layersCount, int faceOne, int faceTwo, boolean hand) {
+    private void horizonSwapLayer(int layersCount, int faceSwap, boolean hand) {
         if (layersCount < 0) throw new Error("Argument stop can be > start only");
         int start;
         int stop;
-        int swapRow;
         if (hand) {
             start = 0;
             stop = layersCount;
@@ -244,14 +398,14 @@ public class RubikCube implements RubikCubeModel {
         }
         for (int row = 0; row < size; row++) {
             for (int column = start; column < stop; column++) {
-                CubeColors temp = cube[faceOne][row][column];
-                cube[faceOne][row][column] = cube[faceTwo][row][column];
-                cube[faceTwo][row][column] = temp;
+                CubeColors temp = cube[0][row][column];
+                cube[0][row][column] = cube[faceSwap][row][column];
+                cube[faceSwap][row][column] = temp;
             }
         }
     }
 
-    private void swapColumnToRow(int layersCount, int faceOne, int faceTwo, boolean hand, boolean revers) {
+    private void swapColumnToRow(int layersCount, int faceSwap, boolean hand, boolean revers) {
         if (layersCount < 0) throw new Error("Argument stop can be > start only");
         CubeColors[] temp;
         int start;
@@ -265,16 +419,16 @@ public class RubikCube implements RubikCubeModel {
             stop = layersCount;
         }
         for (int layer = start; layer < stop; layer++) {
-            temp = cube[faceOne][layer].clone();
+            temp = cube[4][layer].clone();
             for (int box = 0; box < size; box++) {
                 if (!revers) {
-                    cube[faceOne][layer][box] = cube[faceTwo][size - 1 - box][layer];
+                    cube[4][layer][box] = cube[faceSwap][size - 1 - box][layer];
                 }
-                else cube[faceOne][layer][size - 1 - box] = cube[faceTwo][size - 1 - box][size - 1 - layer];
+                else cube[4][layer][size - 1 - box] = cube[faceSwap][size - 1 - box][size - 1 - layer];
             }
             for (int box = 0; box < size; box++) {
-                if (!revers) cube[faceTwo][size - 1 - box][layer] = temp[box];
-                else cube[faceTwo][size - 1 - box][size - 1 - layer] = temp[size - 1 - box];
+                if (!revers) cube[faceSwap][size - 1 - box][layer] = temp[box];
+                else cube[faceSwap][size - 1 - box][size - 1 - layer] = temp[size - 1 - box];
             }
         }
     }
@@ -283,50 +437,50 @@ public class RubikCube implements RubikCubeModel {
         switch (face) {
             case FRONT -> {
                 if (direction == Direction.clockwise) {
-                    swapColumnToRow(layerCount, 4, 3, true, true);
+                    swapColumnToRow(layerCount, 3, true, true);
                     verticalSwapLayer(size - layerCount, size, 4, 5, true);
-                    swapColumnToRow(layerCount, 4, 2, true, false);
+                    swapColumnToRow(layerCount, 2, true, false);
                 }
                 else {
-                    swapColumnToRow(layerCount, 4, 2, true, false);
+                    swapColumnToRow(layerCount, 2, true, false);
                     verticalSwapLayer(size - layerCount, size, 4, 5, true);
-                    swapColumnToRow(layerCount, 4, 3, true, true);
+                    swapColumnToRow(layerCount, 3, true, true);
                 }
             }
             case BACK -> {
                 if (direction == Direction.clockwise) {
-                    swapColumnToRow(layerCount, 4, 2, false, false);
+                    swapColumnToRow(layerCount, 2, false, false);
                     verticalSwapLayer(0, layerCount, 4, 5, true);
-                    swapColumnToRow(layerCount, 4, 3, false, true);
+                    swapColumnToRow(layerCount, 3, false, true);
                 }
                 else {
-                    swapColumnToRow(layerCount, 4, 3, false, true);
+                    swapColumnToRow(layerCount, 3, false, true);
                     verticalSwapLayer(0, layerCount, 4, 5, true);
-                    swapColumnToRow(layerCount, 4, 2, false, false);
+                    swapColumnToRow(layerCount, 2, false, false);
                 }
             }
             case LEFT -> {
                 if(direction == Direction.clockwise) {
-                    horizonSwapLayer(layerCount, 0, 5, true);
-                    horizonSwapLayer(layerCount, 0, 1, true);
-                    horizonSwapLayer(layerCount, 0, 4, true);
+                    horizonSwapLayer(layerCount, 5, true);
+                    horizonSwapLayer(layerCount, 1, true);
+                    horizonSwapLayer(layerCount, 4, true);
                 }
                 else {
-                    horizonSwapLayer(layerCount, 0, 4, true);
-                    horizonSwapLayer(layerCount, 0, 1, true);
-                    horizonSwapLayer(layerCount, 0, 5, true);
+                    horizonSwapLayer(layerCount, 4, true);
+                    horizonSwapLayer(layerCount, 1, true);
+                    horizonSwapLayer(layerCount, 5, true);
                 }
             }
             case RIGHT -> {
                 if(direction == Direction.clockwise) {
-                    horizonSwapLayer(layerCount, 0, 4, false);
-                    horizonSwapLayer(layerCount, 0, 1, false);
-                    horizonSwapLayer(layerCount, 0, 5, false);
+                    horizonSwapLayer(layerCount, 4, false);
+                    horizonSwapLayer(layerCount, 1, false);
+                    horizonSwapLayer(layerCount, 5, false);
                 }
                 else {
-                    horizonSwapLayer(layerCount, 0, 5, false);
-                    horizonSwapLayer(layerCount, 0, 1, false);
-                    horizonSwapLayer(layerCount, 0, 4, false);
+                    horizonSwapLayer(layerCount, 5, false);
+                    horizonSwapLayer(layerCount, 1, false);
+                    horizonSwapLayer(layerCount, 4, false);
                 }
             }
             case UP -> {

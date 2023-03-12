@@ -1,14 +1,16 @@
 import org.junit.jupiter.api.Test;
-import org.rubicCube.Direction;
-import org.rubicCube.Face;
 import org.rubicCube.RubikCube;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RubikCubeTests {
+public class RubikCubeTests extends RubikCube {
     RubikCube cubeA = new RubikCube(3);
     RubikCube cubeB = new RubikCube(3);
     RubikCube cubeC = new RubikCube(3);
     RubikCube cubeD = new RubikCube(4);
+
+    public RubikCubeTests(int size) {
+        super(size);
+    }
 
     @Test
     public void equals() {

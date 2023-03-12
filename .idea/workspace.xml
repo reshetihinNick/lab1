@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8b2e8b97-a2d3-4c87-9bf7-47b2844dc36a" name="Changes" comment="На всякий">
+    <list default="true" id="8b2e8b97-a2d3-4c87-9bf7-47b2844dc36a" name="Changes" comment="Работает, осталось дописать solvingTheCube">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/CubeColors.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/Direction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/Face.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCube.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/rubicCube/RubikCubeModel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/RubikCubeTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/RubikCubeTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678391297326</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Работает, осталось дописать solvingTheCube">
+      <created>1678614188259</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1678614188259</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -125,6 +134,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Не реализовал solvingTheCube и тесты не написаны" />
     <MESSAGE value="На всякий" />
-    <option name="LAST_COMMIT_MESSAGE" value="На всякий" />
+    <MESSAGE value="Работает, осталось дописать solvingTheCube" />
+    <option name="LAST_COMMIT_MESSAGE" value="Работает, осталось дописать solvingTheCube" />
   </component>
 </project>
