@@ -8,48 +8,10 @@ public class RubikCube {
     private final int size;
     private final CubeColors[][][] cube;
 
-    protected enum ParitySolution {
-        PARITY1,
-        PARITY2,
-        PARITY3,
-        PARITY4,
-        PARITY5,
-        PARITY6,
-        PARITY7,
-        DEFAULT
-    }
-
-    protected enum Face {
-        FRONT,
-        BACK,
-        LEFT,
-        RIGHT,
-        UP,
-        DOWN
-    }
-
-    protected enum Direction {
-        clockwise,
-        counterclockwise
-    }
-
-    protected enum CubeColors {
-        RED,
-        ORANGE,
-        YELLOW,
-        WHITE,
-        GREEN,
-        BLUE
-    }
-
     public RubikCube(int size) {
         this.size = size;
         if (this.size < 2) throw new Error("Need size more than 1");
         this.cube = new CubeColors[6][size][size];
-        cubeCreating();
-    }
-
-    private void cubeCreating() {
         for (int face = 0; face < 6; face++) {
             for (int row = 0; row < size; row++) {
                 for (int element = 0; element < size; element++)
@@ -59,278 +21,26 @@ public class RubikCube {
     }
 
     public static void main(String[] args) {
-        RubikCube cube1 = new RubikCube(2);
-        cube1.cubeMixing();
-        System.out.println(cube1);
-        System.out.println("------------------");
-        cube1.solvingTheCube();
-        System.out.println(cube1);
     }
 //Состояние граней
-    public Object[][] faceCondition(Face face) {
-        return switch (face) {
-            case FRONT -> cube[0];
-            case BACK -> cube[1];
-            case LEFT -> cube[2];
-            case RIGHT -> cube[3];
-            case UP -> cube[4];
-            case DOWN -> cube[5];
-        };
-    }
-// Решение кубика Рубика (для начала 2 на 2)
-    private void combinationPIFPAF() {
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-    }
-
-    private void combinationOne() {
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.BACK, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.BACK, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-    }
-
-    private void combinationTwo() {
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-    }
-
-    private void combinationThree() {
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-    }
-
-    private void finalCombinationOne() {
-        combinationPIFPAF();
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
-    }
-
-    private void finalCombinationTwo() {
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
-        combinationPIFPAF();
-        rotateSomeLayersTo(Face.RIGHT, Direction.counterclockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.RIGHT, Direction.clockwise, 1);
-        rotateSomeLayersTo(Face.FRONT, Direction.counterclockwise, 1);
-    }
-    private boolean ifSingleColorInFace(int face, CubeColors color) {
+    public CubeColors[][] faceCondition(Face face) {
+        int faceSearch = 0;
+        switch (face) {
+            case FRONT -> {
+            }
+            case BACK -> faceSearch = 1;
+            case LEFT -> faceSearch = 2;
+            case RIGHT -> faceSearch = 3;
+            case UP -> faceSearch = 4;
+            case DOWN -> faceSearch = 5;
+        }
+        CubeColors[][] condition = new CubeColors[size][size];
         for (int row = 0; row < size; row++) {
-            if (!ifSingleColorInRow(face, row, color)) return false;
-         }
-        return true;
-    }
-
-    private boolean ifSomeSingleColorInFace(int face) {
-        for (int row = 0; row < size; row++) {
-            if (!ifSomeSingleColorInRow(face, row)) return false;
-        }
-        return cube[face][0][0] == cube[face][size - 1][0];
-    }
-
-    private boolean ifSingleColorInRow(int face, int row, CubeColors color) {
-        for (int column = 0; column < size; column++) {
-            if (cube[face][row][column] != color) return false;
-        }
-        return true;
-    }
-
-    private boolean ifSomeSingleColorInRow(int face, int row) {
-        for (int column = 0; column < size - 1; column++) {
-            if (cube[face][row][column] != cube[face][row][column + 1]) return false;
-        }
-        return true;
-    }
-
-    private boolean ifSomeSingleColorInRows(int rows) {
-        int row;
-        for (int face = 0; face < 4; face++) {
-            if (face == 1) row = size - 1 - rows;
-            else row = rows;
-            if (!ifSomeSingleColorInRow(face, row)) return false;
-        }
-        return true;
-    }
-
-    private boolean whiteColorCheck() {
-        return  cube[0][size - 1][size - 1] == CubeColors.WHITE ||
-                cube[0][0][size - 1]        == CubeColors.WHITE ||
-                cube[4][size - 1][size - 1] == CubeColors.WHITE ||
-                cube[3][0][0]               == CubeColors.WHITE ||
-                cube[3][size - 1][0]        == CubeColors.WHITE;
-    }
-
-    private ParitySolution ParitySearch() {
-        if (cube[0][0][0]               == CubeColors.YELLOW &&
-            cube[2][0][0]               == CubeColors.YELLOW &&
-            cube[3][0][0]               == CubeColors.YELLOW &&
-            cube[4][0][size - 1]        == CubeColors.YELLOW
-        ) return ParitySolution.PARITY1;
-        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
-            cube[3][0][size - 1]        == CubeColors.YELLOW &&
-            cube[1][size - 1][0]        == CubeColors.YELLOW &&
-            cube[4][size - 1][0]        == CubeColors.YELLOW
-        ) return ParitySolution.PARITY2;
-        if (cube[0][0][0]               == CubeColors.YELLOW &&
-            cube[3][0][size - 1]        == CubeColors.YELLOW &&
-            cube[4][0][0]               == CubeColors.YELLOW &&
-            cube[4][size - 1][size - 1] == CubeColors.YELLOW
-        ) return ParitySolution.PARITY5;
-        if (cube[4][size - 1][0]        == CubeColors.YELLOW &&
-            cube[4][size - 1][size - 1] == CubeColors.YELLOW &&
-            cube[3][0][size - 1]        == CubeColors.YELLOW &&
-            cube[2][0][0]               == CubeColors.YELLOW
-        ) return ParitySolution.PARITY6;
-        if (ifSingleColorInRow(0, 0, CubeColors.YELLOW) &&
-            ifSingleColorInRow(1,size - 1, CubeColors.YELLOW))
-            return ParitySolution.PARITY3;
-        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
-            cube[1][size - 1][size - 1] == CubeColors.YELLOW &&
-            ifSingleColorInRow(2, 0, CubeColors.YELLOW)
-        ) return ParitySolution.PARITY4;
-        if (cube[4][0][0]        == CubeColors.YELLOW &&
-            cube[4][size - 1][0] == CubeColors.YELLOW &&
-            ifSingleColorInRow(3, 0, CubeColors.YELLOW)
-        ) return ParitySolution.PARITY7;
-        return ParitySolution.DEFAULT;
-    }
-
-    private boolean isSolved() {
-        for (int face = 0; face < 6; face++) {
-            if (!ifSomeSingleColorInFace(face)) return false;
-        }
-        return true;
-    }
-
-    private boolean singleColorFaceSearch() {
-        for (int turnCount = 0; turnCount < 4; turnCount++) {
-            if (ifSomeSingleColorInFace(0) ||
-                ifSomeSingleColorInFace(1) ||
-                ifSomeSingleColorInFace(2) ||
-                ifSomeSingleColorInFace(3)) return true;
-            rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        }
-        return false;
-    }
-
-    public void solvingTheCube() {
-        if (size != 2) throw new Error("This function solve cube with size 2 only");
-        while (!ifSingleColorInFace(5, CubeColors.WHITE)) {
-            if (whiteColorCheck()) {
-                if (cube[5][0][size - 1] != CubeColors.WHITE) {
-                    while (cube[5][0][size - 1] != CubeColors.WHITE)
-                        combinationPIFPAF();
-                }
-                else {
-                    rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-                    rotateFaceTo(Face.UP, Direction.clockwise);
-                }
-            }
-            else rotateFaceTo(Face.UP, Direction.clockwise);
-        }
-        rotateFaceTo(Face.RIGHT, Direction.clockwise);
-        rotateFaceTo(Face.RIGHT, Direction.clockwise);
-        while (!ifSomeSingleColorInRows(0)) {
-            if (!ifSomeSingleColorInRow(0, 0)) {
-                if (ifSomeSingleColorInRow(2, 0))
-                    rotateFaceTo(Face.UP, Direction.counterclockwise);
-                else {
-                    if (ifSomeSingleColorInRow(3, 0))
-                        rotateFaceTo(Face.UP, Direction.clockwise);
-                    else {
-                        if (ifSomeSingleColorInRow(1, size - 1)) {
-                            rotateFaceTo(Face.UP, Direction.clockwise);
-                            rotateFaceTo(Face.UP, Direction.clockwise);
-                        }
-                    }
-                }
-            }
-            combinationOne();
-        }
-        while (!ifSomeSingleColorInRow(0, 0) && cube[0][0][0] == CubeColors.BLUE)
-            rotateFaceTo(Face.UP, Direction.clockwise);
-        rotateFaceTo(Face.FRONT, Direction.clockwise);
-        rotateFaceTo(Face.FRONT, Direction.clockwise);
-        while (ParitySearch() == ParitySolution.DEFAULT) {
-            if (ifSingleColorInFace(4, CubeColors.YELLOW)) break;
-            rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        }
-        switch (ParitySearch()) {
-            case PARITY1 -> combinationTwo();
-            case PARITY2 -> combinationThree();
-            case PARITY3 -> {
-                combinationTwo();
-                combinationTwo();
-            }
-            case PARITY4 -> {
-                combinationTwo();
-                rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-                combinationTwo();
-            }
-            case PARITY5 -> {
-                combinationTwo();
-                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-                combinationThree();
-            }
-            case PARITY6 -> {
-                combinationTwo();
-                rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-                combinationThree();
-            }
-            case PARITY7 -> {
-                combinationTwo();
-                rotateSomeLayersTo(Face.UP, Direction.counterclockwise, 1);
-                combinationThree();
+            for (int column = 0; column < size; column++) {
+                condition[row][column] = CubeColors.valueOf(cube[faceSearch][row][column].toString());
             }
         }
-        if (singleColorFaceSearch()) {
-            while (!ifSomeSingleColorInFace(2)) rotateFaceTo(Face.UP, Direction.clockwise);
-            if (!isSolved()) finalCombinationOne();
-        }
-        else {
-            finalCombinationTwo();
-            while (!isSolved()) rotateSomeLayersTo(Face.UP, Direction.clockwise, 1);
-        }
+        return condition;
     }
 // Поворот слоев
     private void faceTurning(Face face, Direction direction) {
@@ -348,9 +58,9 @@ public class RubikCube {
         for (int row = 0; row < size; row++) {
             for (int column = 0; column < size; column++) {
                 switch (direction) {
-                    case clockwise ->
+                    case CLOCKWISE ->
                             buffer[column][size - row - 1] = cube[faceInt][row][column];
-                    case counterclockwise ->
+                    case COUNTERCLOCKWISE ->
                             buffer[size - column - 1][row] = cube[faceInt][row][column];
                 }
             }
@@ -358,7 +68,7 @@ public class RubikCube {
         cube[faceInt] = buffer.clone();
     }
 
-    public void reverseRow(int face, int row) {
+    private void reverseRow(int face, int row) {
         CubeColors temp;
         for (int column = 0; column < size / 2; column++) {
             temp = cube[face][row][column];
@@ -434,9 +144,10 @@ public class RubikCube {
     }
 
     public void rotateSomeLayersTo(Face face, Direction direction, int layerCount) {
+        if (layerCount > size) throw new Error("layerCount must be lower than size or equal");
         switch (face) {
             case FRONT -> {
-                if (direction == Direction.clockwise) {
+                if (direction == Direction.CLOCKWISE) {
                     swapColumnToRow(layerCount, 3, true, true);
                     verticalSwapLayer(size - layerCount, size, 4, 5, true);
                     swapColumnToRow(layerCount, 2, true, false);
@@ -448,7 +159,7 @@ public class RubikCube {
                 }
             }
             case BACK -> {
-                if (direction == Direction.clockwise) {
+                if (direction == Direction.CLOCKWISE) {
                     swapColumnToRow(layerCount, 2, false, false);
                     verticalSwapLayer(0, layerCount, 4, 5, true);
                     swapColumnToRow(layerCount, 3, false, true);
@@ -460,7 +171,7 @@ public class RubikCube {
                 }
             }
             case LEFT -> {
-                if(direction == Direction.clockwise) {
+                if(direction == Direction.CLOCKWISE) {
                     horizonSwapLayer(layerCount, 5, true);
                     horizonSwapLayer(layerCount, 1, true);
                     horizonSwapLayer(layerCount, 4, true);
@@ -472,7 +183,7 @@ public class RubikCube {
                 }
             }
             case RIGHT -> {
-                if(direction == Direction.clockwise) {
+                if(direction == Direction.CLOCKWISE) {
                     horizonSwapLayer(layerCount, 4, false);
                     horizonSwapLayer(layerCount, 1, false);
                     horizonSwapLayer(layerCount, 5, false);
@@ -484,7 +195,7 @@ public class RubikCube {
                 }
             }
             case UP -> {
-                if (direction == Direction.clockwise) {
+                if (direction == Direction.CLOCKWISE) {
                     verticalSwapLayer(0, layerCount,0, 2, false);
                     verticalSwapLayer(0, layerCount,0, 1, true);
                     verticalSwapLayer(0, layerCount,0, 3, false);
@@ -496,7 +207,7 @@ public class RubikCube {
                 }
             }
             case DOWN -> {
-                if (direction == Direction.clockwise) {
+                if (direction == Direction.CLOCKWISE) {
                     verticalSwapLayer(size - layerCount, size,0, 3, false);
                     verticalSwapLayer(size - layerCount, size,0, 1, true);
                     verticalSwapLayer(size - layerCount, size,0, 2, false);
@@ -511,34 +222,34 @@ public class RubikCube {
         if (layerCount == size) {
             switch (face) {
                 case FRONT -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.BACK, Direction.counterclockwise);
-                    else faceTurning(Face.BACK, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.BACK, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.BACK, Direction.CLOCKWISE);
                 }
                 case BACK -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.FRONT, Direction.counterclockwise);
-                    else faceTurning(Face.FRONT, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.FRONT, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.FRONT, Direction.CLOCKWISE);
                 }
                 case LEFT -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.RIGHT, Direction.counterclockwise);
-                    else faceTurning(Face.RIGHT, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.RIGHT, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.RIGHT, Direction.CLOCKWISE);
                 }
                 case RIGHT -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.LEFT, Direction.counterclockwise);
-                    else faceTurning(Face.LEFT, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.LEFT, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.LEFT, Direction.CLOCKWISE);
                 }
                 case UP -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.DOWN, Direction.counterclockwise);
-                    else faceTurning(Face.DOWN, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.DOWN, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.DOWN, Direction.CLOCKWISE);
                 }
                 case DOWN -> {
-                    if (direction == Direction.clockwise)
-                        faceTurning(Face.UP, Direction.counterclockwise);
-                    else faceTurning(Face.UP, Direction.clockwise);
+                    if (direction == Direction.CLOCKWISE)
+                        faceTurning(Face.UP, Direction.COUNTERCLOCKWISE);
+                    else faceTurning(Face.UP, Direction.CLOCKWISE);
                 }
             }
         }
@@ -562,10 +273,11 @@ public class RubikCube {
             );
         }
     }
-//Остальное
+//-----------------------------------
     public int size() {
         return size;
     }
+
     @Override
     public int hashCode() {
         int result = Objects.hash(size);
@@ -618,5 +330,305 @@ public class RubikCube {
             RubikCubeToString.add("\n");
         }
         return RubikCubeToString.toString();
+    }
+// Решение кубика Рубика (только кубик 2 на 2)
+    public int solvingTheCube() {
+        int steps = 0;
+        if (size != 2) throw new Error("This function solve cube with size 2 only");
+        while (!ifSingleColorInFace(5, CubeColors.WHITE)) {
+            if (whiteOnFrontCornerCheck()) {
+                if (cube[5][0][size - 1] != CubeColors.WHITE) {
+                    while (cube[5][0][size - 1] != CubeColors.WHITE) {
+                        combinationPIFPAF();
+                        steps += 4;
+                    }
+                }
+                else {
+                    rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, 1);
+                    rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                    steps += 2;
+                }
+            }
+            else {
+                rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                steps += 1;
+            }
+        }
+        rotateFaceTo(Face.RIGHT, Direction.CLOCKWISE);
+        rotateFaceTo(Face.RIGHT, Direction.CLOCKWISE);
+        steps += 2;
+        while (!ifSomeSingleColorInRows(0)) {
+            if (!ifSomeSingleColorInRow(0, 0)) {
+                if (ifSomeSingleColorInRow(2, 0)) {
+                    rotateFaceTo(Face.UP, Direction.COUNTERCLOCKWISE);
+                    steps += 1;
+                }
+                else {
+                    if (ifSomeSingleColorInRow(3, 0)) {
+                        rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                        steps += 1;
+                    }
+                    else {
+                        if (ifSomeSingleColorInRow(1, size - 1)) {
+                            rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                            rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                            steps += 2;
+                        }
+                    }
+                }
+            }
+            combinationOne();
+            steps += 12;
+        }
+        while (!ifSomeSingleColorInRow(0, 0) && cube[0][0][0] == CubeColors.BLUE) {
+            rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+            steps += 1;
+        }
+        rotateFaceTo(Face.FRONT, Direction.CLOCKWISE);
+        rotateFaceTo(Face.FRONT, Direction.CLOCKWISE);
+        steps += 2;
+        while (ParitySearch() == ParitySolution.DEFAULT) {
+            if (ifSingleColorInFace(4, CubeColors.YELLOW)) break;
+            rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+            steps += 1;
+        }
+        switch (ParitySearch()) {
+            case PARITY1 -> {
+                combinationTwo();
+                steps += 8;
+            }
+            case PARITY2 -> {
+                combinationThree();
+                steps += 8;
+            }
+            case PARITY3 -> {
+                combinationTwo();
+                combinationTwo();
+                steps += 16;
+            }
+            case PARITY4 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, 1);
+                combinationTwo();
+                steps += 17;
+            }
+            case PARITY5 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+                rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+                combinationThree();
+                steps += 18;
+            }
+            case PARITY6 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+                combinationThree();
+                steps += 17;
+            }
+            case PARITY7 -> {
+                combinationTwo();
+                rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, 1);
+                combinationThree();
+                steps += 17;
+            }
+        }
+        if (singleColorFaceSearch()) {
+            while (!ifSomeSingleColorInFace(2)) {
+                rotateFaceTo(Face.UP, Direction.CLOCKWISE);
+                steps += 1;
+            }
+            if (isNotSolved()) {
+                finalCombinationOne();
+                steps += 15;
+            }
+        }
+        else {
+            finalCombinationTwo();
+            steps += 17;
+            while (isNotSolved()) {
+                rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+                steps += 1;
+            }
+        }
+        return steps;
+    }
+    private void combinationPIFPAF() {
+        final int layersToRotate = 1;
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+    }
+
+    private void combinationOne() {
+        final int layersToRotate = 1;
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.BACK, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.BACK, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+    }
+
+    private void combinationTwo() {
+        final int layersToRotate = 1;
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+    }
+
+    private void combinationThree() {
+        final int layersToRotate = 1;
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+    }
+
+    private void finalCombinationOne() {
+        final int layersToRotate = 1;
+        combinationPIFPAF();
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.COUNTERCLOCKWISE, layersToRotate);
+    }
+
+    private void finalCombinationTwo() {
+        final int layersToRotate = 1;
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        combinationPIFPAF();
+        rotateSomeLayersTo(Face.RIGHT, Direction.COUNTERCLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.RIGHT, Direction.CLOCKWISE, layersToRotate);
+        rotateSomeLayersTo(Face.FRONT, Direction.COUNTERCLOCKWISE, layersToRotate);
+    }
+    private boolean ifSingleColorInFace(int face, CubeColors color) {
+        for (int row = 0; row < size; row++) {
+            if (!ifSingleColorInRow(face, row, color)) return false;
+        }
+        return true;
+    }
+
+    private boolean ifSomeSingleColorInFace(int face) {
+        for (int row = 0; row < size; row++) {
+            if (!ifSomeSingleColorInRow(face, row)) return false;
+        }
+        return cube[face][0][0] == cube[face][size - 1][0];
+    }
+
+    private boolean ifSingleColorInRow(int face, int row, CubeColors color) {
+        for (int column = 0; column < size; column++) {
+            if (cube[face][row][column] != color) return false;
+        }
+        return true;
+    }
+
+    private boolean ifSomeSingleColorInRow(int face, int row) {
+        for (int column = 0; column < size - 1; column++) {
+            if (cube[face][row][column] != cube[face][row][column + 1]) return false;
+        }
+        return true;
+    }
+
+    private boolean ifSomeSingleColorInRows(int rows) {
+        int row;
+        for (int face = 0; face < 4; face++) {
+            if (face == 1) row = size - 1 - rows;
+            else row = rows;
+            if (!ifSomeSingleColorInRow(face, row)) return false;
+        }
+        return true;
+    }
+
+    private boolean whiteOnFrontCornerCheck() {
+        return  cube[0][size - 1][size - 1] == CubeColors.WHITE ||
+                cube[0][0][size - 1]        == CubeColors.WHITE ||
+                cube[4][size - 1][size - 1] == CubeColors.WHITE ||
+                cube[3][0][0]               == CubeColors.WHITE ||
+                cube[3][size - 1][0]        == CubeColors.WHITE;
+    }
+
+    private ParitySolution ParitySearch() {
+        if (cube[0][0][0]               == CubeColors.YELLOW &&
+                cube[2][0][0]               == CubeColors.YELLOW &&
+                cube[3][0][0]               == CubeColors.YELLOW &&
+                cube[4][0][size - 1]        == CubeColors.YELLOW
+        ) return ParitySolution.PARITY1;
+        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
+                cube[3][0][size - 1]        == CubeColors.YELLOW &&
+                cube[1][size - 1][0]        == CubeColors.YELLOW &&
+                cube[4][size - 1][0]        == CubeColors.YELLOW
+        ) return ParitySolution.PARITY2;
+        if (cube[0][0][0]               == CubeColors.YELLOW &&
+                cube[3][0][size - 1]        == CubeColors.YELLOW &&
+                cube[4][0][0]               == CubeColors.YELLOW &&
+                cube[4][size - 1][size - 1] == CubeColors.YELLOW
+        ) return ParitySolution.PARITY5;
+        if (cube[4][size - 1][0]        == CubeColors.YELLOW &&
+                cube[4][size - 1][size - 1] == CubeColors.YELLOW &&
+                cube[3][0][size - 1]        == CubeColors.YELLOW &&
+                cube[2][0][0]               == CubeColors.YELLOW
+        ) return ParitySolution.PARITY6;
+        if (ifSingleColorInRow(0, 0, CubeColors.YELLOW) &&
+                ifSingleColorInRow(1,size - 1, CubeColors.YELLOW))
+            return ParitySolution.PARITY3;
+        if (cube[0][0][size - 1]        == CubeColors.YELLOW &&
+                cube[1][size - 1][size - 1] == CubeColors.YELLOW &&
+                ifSingleColorInRow(2, 0, CubeColors.YELLOW)
+        ) return ParitySolution.PARITY4;
+        if (cube[4][0][0]        == CubeColors.YELLOW &&
+                cube[4][size - 1][0] == CubeColors.YELLOW &&
+                ifSingleColorInRow(3, 0, CubeColors.YELLOW)
+        ) return ParitySolution.PARITY7;
+        return ParitySolution.DEFAULT;
+    }
+
+    private boolean isNotSolved() {
+        for (int face = 0; face < 6; face++) {
+            if (!ifSomeSingleColorInFace(face)) return true;
+        }
+        return false;
+    }
+
+    private boolean singleColorFaceSearch() {
+        for (int turnCount = 0; turnCount < 4; turnCount++) {
+            if (ifSomeSingleColorInFace(0) ||
+                    ifSomeSingleColorInFace(1) ||
+                    ifSomeSingleColorInFace(2) ||
+                    ifSomeSingleColorInFace(3)) return true;
+            rotateSomeLayersTo(Face.UP, Direction.CLOCKWISE, 1);
+        }
+        return false;
     }
 }
